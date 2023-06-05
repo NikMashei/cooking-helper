@@ -14,10 +14,10 @@ class Meal(
 
     var type: MealType,
 
-    @ManyToMany
-    @JoinTable(
-        name="meal_ingredient",
-        joinColumns = [JoinColumn(name="fk_meal")],
-        inverseJoinColumns = [JoinColumn(name="fk_ingredient")])
-    var indredients: List<Ingredient> = mutableListOf()
+    @OneToMany(
+        mappedBy = "meal",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true
+    )
+    var ingredients: List<MealIngredient> = mutableListOf()
 )

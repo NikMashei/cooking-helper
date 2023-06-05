@@ -13,5 +13,12 @@ class Ingredient(
     @Column(nullable = false)
     var name: String,
 
-    var unit: MeasureUnit
+    var unit: MeasureUnit,
+
+    @OneToMany(
+        mappedBy = "ingredient",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true
+    )
+    var meals: List<MealIngredient> = mutableListOf()
 )
