@@ -1,0 +1,64 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+	id 'org.springframework.boot' version '3.1.0'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.vaadin' version '24.0.5'
+	id 'org.jetbrains.kotlin.jvm' version '1.8.21'
+	id 'org.jetbrains.kotlin.plugin.spring' version '1.8.21'
+	id 'org.jetbrains.kotlin.plugin.jpa' version '1.8.21'
+}
+
+group = 'dev.mashei'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('vaadinVersion', "24.0.5")
+}
+
+dependencies {
+	// spring
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// vaadin
+	implementation 'com.vaadin:vaadin-spring-boot-starter'
+	implementation 'com.github.mvysny.karibudsl:karibu-dsl:1.0.1'
+
+	// database
+	runtimeOnly 'org.postgresql:postgresql'
+	implementation 'org.liquibase:liquibase-core'
+
+	// kotlin
+	implementation 'org.jetbrains.kotlin:kotlin-reflect'
+
+	// test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+	}
+}
+
+tasks.withType(KotlinCompile) {
+	kotlinOptions {
+		freeCompilerArgs = ['-Xjsr305=strict']
+		jvmTarget = '17'
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
