@@ -1,4 +1,7 @@
 spring:
+  devtools:
+    restart:
+      quiet-period: 900
   jpa:
     generate-ddl: true
     show-sql: true

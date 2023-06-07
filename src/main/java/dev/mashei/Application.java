@@ -29,7 +29,7 @@ public class Application {
                     new Ingredient(null, "sugar", MeasureUnit.MILLILITER, List.of()),
                     new Ingredient(null, "powder", MeasureUnit.MILLILITER, List.of()),
                     new Ingredient(null, "water", MeasureUnit.MILLILITER, List.of()),
-                    new Ingredient(null, "cheese", MeasureUnit.MILLILITER, List.of()));
+                    new Ingredient(null, "onion", MeasureUnit.MILLILITER, List.of()));
             ingredientRepository.deleteAll();
             ingredientRepository.saveAll(ingredients);
         };
