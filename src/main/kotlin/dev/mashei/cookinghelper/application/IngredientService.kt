@@ -32,7 +32,7 @@ class IngredientService(var repository: IngredientRepository) :
         repository.deleteById(id)
     }
 
-    override fun queryIngredients(query: Query): Iterable<Ingredient> {
+    override fun queryIngredients(query: Query): List<Ingredient> {
         if (query.searchFilter != null) {
             return repository.search(query.searchFilter)
         }

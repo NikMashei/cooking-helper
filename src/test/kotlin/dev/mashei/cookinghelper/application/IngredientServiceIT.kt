@@ -151,7 +151,7 @@ class IngredientServiceIT : AbstractPostgresContainer() {
         }
 
         // when
-        val ingredientsByQuery = service.queryIngredients(Query("chi")) as List
+        val ingredientsByQuery = service.queryIngredients(Query("chi"))
 
         // then
         assert(ingredientsByQuery.size == 2)
@@ -171,7 +171,7 @@ class IngredientServiceIT : AbstractPostgresContainer() {
         }
 
         // when
-        val ingredientsByQuery = service.queryIngredients(Query()) as List
+        val ingredientsByQuery = service.queryIngredients(Query())
 
         // then
         assert(ingredientsByQuery.size == 3)
