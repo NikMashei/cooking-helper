@@ -2,6 +2,7 @@ package dev.mashei.cookinghelper.application
 
 import dev.mashei.cookinghelper.ApiError
 import dev.mashei.cookinghelper.application.EditIngredientUseCase.EditIngredient
+import dev.mashei.cookinghelper.application.IngredientsQuery.Query
 import dev.mashei.cookinghelper.application.SaveIngredientUseCase.Command
 import dev.mashei.cookinghelper.common.MeasureUnit
 import dev.mashei.cookinghelper.model.Ingredient
@@ -31,6 +32,7 @@ class IngredientServiceIT : AbstractPostgresContainer() {
 
     @BeforeEach
     fun initEach() {
+        entityManager.entityManager.createQuery("DELETE FROM Ingredient").executeUpdate()
         service = IngredientService(repository)
     }
 
@@ -44,8 +46,6 @@ class IngredientServiceIT : AbstractPostgresContainer() {
 
         // then
         assert(savedIngredient.id != null)
-
-        entityManager.detach(savedIngredient)
     }
 
     @Test
@@ -61,8 +61,6 @@ class IngredientServiceIT : AbstractPostgresContainer() {
 
         // then
         assert(exception.message == "not unique ingredient - eggs")
-
-        entityManager.detach(ingredient)
     }
 
     @Test
@@ -137,5 +135,45 @@ class IngredientServiceIT : AbstractPostgresContainer() {
 
         // then
         assert(exception.message == "ingredient not found")
+    }
+
+    @Test
+    fun `service should return ingredients matching a search criteria`() {
+        // given
+        val ingredients = listOf(
+            Ingredient(name = "chicken", unit = MeasureUnit.GRAM),
+            Ingredient(name = "chia", unit = MeasureUnit.GRAM),
+            Ingredient(name = "turkey", unit = MeasureUnit.GRAM)
+        )
+
+        ingredients.forEach { ingredient ->
+            entityManager.persistAndFlush(ingredient)
+        }
+
+        // when
+        val ingredientsByQuery = service.queryIngredients(Query("chi")) as List
+
+        // then
+        assert(ingredientsByQuery.size == 2)
+    }
+
+    @Test
+    fun `service should returns all ingredients if a search criteria is not specified`() {
+        // given
+        val ingredients = listOf(
+            Ingredient(name = "chicken", unit = MeasureUnit.GRAM),
+            Ingredient(name = "chia", unit = MeasureUnit.GRAM),
+            Ingredient(name = "turkey", unit = MeasureUnit.GRAM)
+        )
+
+        ingredients.forEach { ingredient ->
+            entityManager.persistAndFlush(ingredient)
+        }
+
+        // when
+        val ingredientsByQuery = service.queryIngredients(Query()) as List
+
+        // then
+        assert(ingredientsByQuery.size == 3)
     }
 }

@@ -2,6 +2,7 @@ package dev.mashei.cookinghelper.application
 
 import dev.mashei.cookinghelper.ApiError
 import dev.mashei.cookinghelper.application.EditIngredientUseCase.EditIngredient
+import dev.mashei.cookinghelper.application.IngredientsQuery.*
 import dev.mashei.cookinghelper.model.Ingredient
 import dev.mashei.cookinghelper.persistence.IngredientRepository
 import org.springframework.stereotype.Component
@@ -31,7 +32,10 @@ class IngredientService(var repository: IngredientRepository) :
         repository.deleteById(id)
     }
 
-    override fun queryIngredients(): Iterable<Ingredient> {
+    override fun queryIngredients(query: Query): Iterable<Ingredient> {
+        if (query.searchFilter != null) {
+            return repository.search(query.searchFilter)
+        }
         return repository.findAll()
     }
 

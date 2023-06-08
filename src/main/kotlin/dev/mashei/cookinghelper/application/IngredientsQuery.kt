@@ -4,5 +4,7 @@ import dev.mashei.cookinghelper.model.Ingredient
 
 interface IngredientsQuery {
 
-    fun queryIngredients(): Iterable<Ingredient>
+    fun queryIngredients(query: Query): Iterable<Ingredient>
+
+    class Query(val searchFilter: String? = null)
 }
