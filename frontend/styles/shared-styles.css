@@ -1,0 +1,19 @@
+.ingredients-list-view .content {
+    display: flex;
+}
+
+.ingredients-list-view .ingredient-grid {
+    flex: 2;
+}
+
+.ingredients-list-view .ingredient-form {
+    flex: 1;
+    padding: var(--lumo-space-m);
+}
+
+@media all and (max-width: 1100px) {
+    .ingredients-list-view.editing .toolbar,
+    .ingredients-list-view.editing .ingredient-grid {
+        display: none;
+    }
+}
